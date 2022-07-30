@@ -1,14 +1,11 @@
 const express = require('express');
+const checklistRouter = require('./src/routes/checklist');
+
 const app = express();
 const PORT = 3000;
 
-app.get('/', (req, res) => {
-  res.send('<h1>Hello, Express!</h1>');
-});
-
-app.get('/json', (req, res) => {
-  res.json({ title: 'Task 1', done: true });
-});
+app.use(express.json());
+app.use('/checklists', checklistRouter);
 
 app.listen(PORT, () => {
   console.log('server running on port: ' + PORT);
