@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+  <%- include('../layouts/head', { title: checklist.title }) %>
+  <body>
+    <%- include('../layouts/menu') %>
+    <section class="section">
+      <div class="container">
+        <div class="columns">
+          <div class="column is-four-fifths">
+            <h1 class="title size-4"><%= checklist.title %></h1>
+          </div>
+          <div class="column is-one-fifth">
+            <a href="add-task.html" class="button is-success is-small"
+              >New Task</a
+            >
+            <a href="/checklists" class="button is-small">Back</a>
+          </div>
+        </div>
+
+        <hr />
+
+        <div class="columns">
+          <div class="column is-four-fifths">
+            <input id="task" type="checkbox" />
+            <label for="task">Atividade 01</label>
+          </div>
+
+          <div class="column is-one-fifth">
+            <button class="button is-danger is-small">Delete</button>
+          </div>
+        </div>
+      </div>
+    </section>
+  </body>
+</html>
