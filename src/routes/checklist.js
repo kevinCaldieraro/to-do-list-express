@@ -1,4 +1,5 @@
 const express = require('express');
+const checklist = require('../models/checklist');
 const Checklist = require('../models/checklist');
 
 const router = express.Router();
@@ -14,6 +15,26 @@ router
         .render('pages/error', { error: 'Cannot find checklists' });
     }
   })
+  .get('/new', async (req, res) => {
+    try {
+      let checklist = new Checklist();
+      res.status(200).render('checklists/new', { checklist: checklist });
+    } catch (error) {
+      res.status(500).render('pages/error', { error: 'Cannot load form' });
+    }
+  })
+  .post('/', async (req, res) => {
+    try {
+      let { title } = req.body.checklist;
+      let checklist = new Checklist({ title });
+      checklist.save();
+      res.redirect('/checklists');
+    } catch (error) {
+      res
+        .status(422)
+        .render('checklists/new', { checklist: { ...checklist, error } });
+    }
+  })
   .get('/:id', async (req, res) => {
     try {
       let ID = req.params.id;
@@ -22,16 +43,7 @@ router
         .status(200)
         .render('checklists/show_checklist', { checklist: checklist });
     } catch (error) {
-      res.status(422).render('pages/error', { error: 'Cannot find checklist' });
-    }
-  })
-  .post('/', async (req, res) => {
-    try {
-      let { title } = req.body;
-      let checklist = await Checklist.create({ title });
-      res.status(200).json(checklist);
-    } catch (error) {
-      res.status(422).json(error);
+      res.status(500).render('pages/error', { error: 'Cannot find checklist' });
     }
   })
   .patch('/:id', async (req, res) => {
