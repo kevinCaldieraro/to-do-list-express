@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html lang="en">
+  <%- include('../layouts/head', { title: 'New List' }) %>
+  <body>
+    <%- include('../layouts/menu') %>
+    <section class="section">
+      <div class="container">
+        <h1 class="title size-4">New List</h1>
+        <%- include('./form', { method: 'POST', url: '/checklists', checklist:
+        checklist }) %>
+      </div>
+    </section>
+  </body>
+</html>
