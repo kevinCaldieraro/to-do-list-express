@@ -19,16 +19,18 @@
 
         <hr />
 
+        <% checklist.tasks.forEach(task => { %>
         <div class="columns">
           <div class="column is-four-fifths">
             <input id="task" type="checkbox" />
-            <label for="task">Atividade 01</label>
+            <label for="task"><%= task.title %></label>
           </div>
 
           <div class="column is-one-fifth">
             <button class="button is-danger is-small">Delete</button>
           </div>
         </div>
+        <% }) %>
       </div>
     </section>
   </body>
