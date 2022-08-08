@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+  <%- include('../layouts/head', { title: 'Error!' }) %>
+  <body>
+    <%- include('../layouts/menu') %>
+    <section class="section hero is-danger is-fullheight-with-navbar">
+      <div class="hero-body has-text-centered">
+        <div class="container">
+          <h1 class="title">Ops! Something went wrong =(</h1>
+          <h2 class="subtitle"><%= error %></h2>
+          <a href="/checklists" class="button is-light is-medium"
+            >Go to Checklists</a
+          >
+        </div>
+      </div>
+    </section>
+  </body>
+</html>
