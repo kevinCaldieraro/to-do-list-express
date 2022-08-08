@@ -1,13 +1,11 @@
 const express = require('express');
-const checklist = require('../models/checklist');
 const Checklist = require('../models/checklist');
-
 const router = express.Router();
 
 router
   .get('/', async (req, res) => {
     try {
-      let checklists = await Checklist.find({});
+      const checklists = await Checklist.find({});
       res.status(200).render('checklists/index', { checklists: checklists });
     } catch (error) {
       res
@@ -17,16 +15,25 @@ router
   })
   .get('/new', async (req, res) => {
     try {
-      let checklist = new Checklist();
+      const checklist = new Checklist();
       res.status(200).render('checklists/new', { checklist: checklist });
     } catch (error) {
       res.status(500).render('pages/error', { error: 'Cannot load form' });
     }
   })
-  .post('/', async (req, res) => {
+  .get('/:id/edit', async (req, res) => {
     try {
-      let { title } = req.body.checklist;
-      let checklist = new Checklist({ title });
+      const ID = req.params.id;
+      const checklist = await Checklist.findById(ID);
+      res.status(200).render('checklists/edit', { checklist: checklist });
+    } catch (error) {
+      res.status(500).render('pages/error', { error: 'Edit page not found' });
+    }
+  })
+  .post('/', async (req, res) => {
+    const { title } = req.body.checklist;
+    const checklist = new Checklist({ title });
+    try {
       checklist.save();
       res.redirect('/checklists');
     } catch (error) {
@@ -37,8 +44,8 @@ router
   })
   .get('/:id', async (req, res) => {
     try {
-      let ID = req.params.id;
-      let checklist = await Checklist.findById(ID);
+      const ID = req.params.id;
+      const checklist = await Checklist.findById(ID);
       res
         .status(200)
         .render('checklists/show_checklist', { checklist: checklist });
@@ -47,26 +54,28 @@ router
     }
   })
   .patch('/:id', async (req, res) => {
+    const ID = req.params.id;
+    const { title } = req.body.checklist;
+    const checklist = await Checklist.findById(ID);
     try {
-      let ID = req.params.id;
-      let { title } = req.body;
-      let checklist = await Checklist.findByIdAndUpdate(
-        ID,
-        { title },
-        { new: true }
-      );
-      res.status(200).json(checklist);
+      await checklist.updateOne({ title });
+      res.redirect('/checklists');
     } catch (error) {
-      res.status(422).json(error);
+      const errors = error.errors;
+      res
+        .status(422)
+        .render('checklists/edit', { checklist: { ...checklist, errors } });
     }
   })
   .delete('/:id', async (req, res) => {
     try {
-      let ID = req.params.id;
-      let checklist = await Checklist.findByIdAndRemove(ID);
-      res.status(200).json({ message: `${checklist.title} deleted` });
+      const ID = req.params.id;
+      await Checklist.findByIdAndRemove(ID);
+      res.redirect('/checklists');
     } catch (error) {
-      res.status(422).json(error);
+      res
+        .status(422)
+        .render('pages/error', { error: 'Cannot possible remove checklist' });
     }
   });
 
