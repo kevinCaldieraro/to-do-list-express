@@ -1,13 +1,18 @@
 const path = require('path');
 const express = require('express');
+
 const rootRouter = require('./src/routes/index');
 const checklistRouter = require('./src/routes/checklist');
+const methodOverride = require('method-override');
+
 require('./config/database');
 
 const PORT = 3000;
 const app = express();
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(methodOverride('_method', { methods: ['POST', 'GET'] }));
 
 app.use(express.static(path.join(__dirname, 'public')));
 
