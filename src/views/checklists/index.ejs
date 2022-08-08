@@ -33,12 +33,16 @@
                 </p>
                 <p class="card-footer-item">
                   <span>
-                    <a href="checklist-form.html">Edit</a>
+                    <a href="/checklists/<%= checklist._id %>/edit">Edit</a>
                   </span>
                 </p>
                 <p class="card-footer-item">
                   <span>
-                    <a href="#" class="has-text-danger">Delete</a>
+                    <a
+                      href="/checklists/<%= checklist.id %>?_method=DELETE"
+                      class="has-text-danger"
+                      >Delete</a
+                    >
                   </span>
                 </p>
               </footer>
